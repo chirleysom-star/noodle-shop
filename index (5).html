@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เส้นสุข | บะหมี่กึ่งสำเร็จรูป สั่งง่าย ส่งถึงบ้าน</title>
+<meta name="description" content="บะหมี่กึ่งสำเร็จรูปหลายรสชาติ สั่งออนไลน์ กรอกที่อยู่แล้วรอรับที่บ้าน">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600;800&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --broth:#FFC93C;
+    --broth-soft:#FFF1BF;
+    --chili:#D62828;
+    --chili-dark:#A81C1C;
+    --bowl:#2B1A12;
+    --steam:#6B5B52;
+    --paper:#FFFFFF;
+    --line:#E7D9A8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Sarabun","Noto Sans Thai",Tahoma,sans-serif;color:var(--bowl);background:var(--paper);line-height:1.65;font-size:17px}
+  h1,h2,h3{font-family:"Kanit","Noto Sans Thai",Tahoma,sans-serif;line-height:1.2;margin:0}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--chili);outline-offset:3px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* header */
+  header{background:var(--broth)}
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .brand{font-family:"Kanit",sans-serif;font-weight:800;font-size:1.4rem;text-decoration:none}
+  .bar a.cta-sm{background:var(--bowl);color:#fff;text-decoration:none;padding:8px 18px;border-radius:999px;font-weight:600;font-size:.95rem}
+
+  /* hero */
+  .hero{background:var(--broth);padding:24px 0 64px}
+  .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
+  .hero h1{font-weight:800;font-size:clamp(2.4rem,7vw,4.6rem);letter-spacing:-.01em}
+  .hero h1 span{display:block;color:var(--chili)}
+  .hero p{max-width:30em;margin:18px 0 28px;font-size:1.1rem}
+  .btn{display:inline-block;border:0;cursor:pointer;font-family:"Kanit",sans-serif;font-weight:600;font-size:1.1rem;padding:14px 28px;border-radius:999px;background:var(--chili);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--chili-dark)}
+  .btn[disabled]{opacity:.55;cursor:not-allowed}
+  .bowl{width:100%;max-width:340px;justify-self:center}
+  .steam path{animation:rise 3.2s ease-in-out infinite;transform-origin:center}
+  .steam path:nth-child(2){animation-delay:.8s}
+  .steam path:nth-child(3){animation-delay:1.6s}
+  @keyframes rise{0%,100%{opacity:.25;transform:translateY(6px)}50%{opacity:.9;transform:translateY(-6px)}}
+  @media (prefers-reduced-motion:reduce){.steam path{animation:none;opacity:.6}html{scroll-behavior:auto}}
+
+  /* sections */
+  section{padding:56px 0}
+  .sec-head{margin-bottom:28px}
+  .sec-head h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
+  .sec-head p{margin:8px 0 0;color:var(--steam)}
+
+  /* products */
+  .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+  .card{border:2px solid var(--bowl);border-radius:var(--radius);overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+  .card figure{margin:0;aspect-ratio:1/1;background:var(--broth-soft);position:relative;overflow:hidden}
+  .card figure img{width:100%;height:100%;object-fit:contain;padding:14px;display:block}
+  .card figure .fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:6px;font-family:"Kanit",sans-serif;color:var(--steam)}
+  .card figure .fallback b{font-size:3rem;line-height:1}
+  .card figure.noimg img{display:none}
+  .card figure.noimg .fallback{display:flex}
+  .card .body{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card h3{font-size:1.25rem;font-weight:600}
+  .card .meta{color:var(--steam);font-size:.95rem}
+  .price{font-family:"Kanit",sans-serif;font-weight:800;font-size:1.7rem;color:var(--chili);margin-top:auto;padding-top:8px}
+  .price small{font-size:.9rem;font-weight:600;color:var(--steam)}
+  .stepper{display:flex;align-items:center;gap:0;margin-top:10px;border:2px solid var(--bowl);border-radius:999px;width:max-content}
+  .stepper button{width:44px;height:44px;border:0;background:transparent;font-size:1.4rem;cursor:pointer;font-family:inherit;color:var(--bowl)}
+  .stepper button:disabled{opacity:.3;cursor:not-allowed}
+  .stepper output{min-width:44px;text-align:center;font-family:"Kanit",sans-serif;font-weight:600;font-size:1.15rem}
+  .soldout{color:var(--chili);font-weight:600;margin-top:10px}
+
+  /* order */
+  .order{background:var(--broth-soft)}
+  .order-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start}
+  form{background:var(--paper);border:2px solid var(--bowl);border-radius:var(--radius);padding:24px}
+  .field{margin-bottom:16px}
+  label{display:block;font-weight:600;margin-bottom:4px}
+  input[type=text],input[type=tel],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--bowl)}
+  input:focus,textarea:focus{border-color:var(--chili);outline:none}
+  textarea{min-height:92px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .hint{font-size:.88rem;color:var(--steam);margin-top:3px}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .summary{background:var(--bowl);color:#fff;border-radius:var(--radius);padding:24px;position:sticky;top:16px}
+  .summary h3{font-size:1.3rem;margin-bottom:14px}
+  .summary ul{list-style:none;margin:0 0 14px;padding:0}
+  .summary li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.18)}
+  .summary .empty{color:#D9C9BD}
+  .total{display:flex;justify-content:space-between;align-items:baseline;font-family:"Kanit",sans-serif;font-size:1.5rem;font-weight:800;color:var(--broth)}
+  .summary .note{font-size:.88rem;color:#D9C9BD;margin:10px 0 18px}
+  .summary .btn{width:100%;background:var(--broth);color:var(--bowl)}
+  .summary .btn:hover{background:#FFD866}
+  .msg{margin-top:14px;padding:12px 14px;border-radius:10px;font-weight:600;display:none}
+  .msg.err{display:block;background:#FFE1E1;color:#7A1111}
+  .msg.ok{display:block;background:#E1F6E4;color:#14501F}
+
+  footer{background:var(--bowl);color:#D9C9BD;padding:28px 0;font-size:.92rem}
+
+  @media (max-width:820px){
+    .hero-grid,.order-grid{grid-template-columns:1fr}
+    .bowl{max-width:240px;order:-1}
+    .summary{position:static}
+    .row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">เส้นสุข</a>
+    <a class="cta-sm" href="#order">สั่งซื้อ</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>บะหมี่ร้อนๆ<span>พร้อมกินใน 3 นาที</span></h1>
+        <p>เลือกรสที่ชอบ กรอกที่อยู่ แล้วรอรับที่บ้านได้เลย ทางร้านหยิบ แพ็ค และจ่าหน้าพัสดุให้ครบทุกออเดอร์</p>
+        <a class="btn" href="#menu">เลือกรสชาติ</a>
+      </div>
+      <svg class="bowl" viewBox="0 0 320 300" role="img" aria-label="ชามบะหมี่ร้อนมีไอน้ำ">
+        <g class="steam" fill="none" stroke="#2B1A12" stroke-width="7" stroke-linecap="round" opacity=".6">
+          <path d="M110 70c-18-18 18-28 0-48"/>
+          <path d="M160 74c-18-18 18-28 0-48"/>
+          <path d="M210 70c-18-18 18-28 0-48"/>
+        </g>
+        <path d="M60 130c30-34 70-30 100-8 30-22 70-26 100 8" fill="none" stroke="#D62828" stroke-width="9" stroke-linecap="round"/>
+        <path d="M78 152c26-28 58-24 82-4 24-20 56-24 82 4" fill="none" stroke="#2B1A12" stroke-width="7" stroke-linecap="round"/>
+        <path d="M30 140h260c0 78-52 140-130 140S30 218 30 140z" fill="#D62828" stroke="#2B1A12" stroke-width="8" stroke-linejoin="round"/>
+        <path d="M58 196c60 22 144 22 204 0" fill="none" stroke="#FFC93C" stroke-width="8" stroke-linecap="round"/>
+        <path d="M232 36l56 64" stroke="#2B1A12" stroke-width="8" stroke-linecap="round"/>
+        <path d="M250 28l56 64" stroke="#2B1A12" stroke-width="8" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>เลือกรสชาติ</h2>
+        <p>ราคาต่อ 1 แพ็ค กดปุ่ม + เพื่อเพิ่มจำนวน</p>
+      </div>
+      <div class="products" id="products" aria-live="polite">
+        <p>กำลังโหลดสินค้า...</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="order" id="order">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>กรอกที่อยู่จัดส่ง</h2>
+        <p>ตรวจเบอร์โทรและที่อยู่ให้ถูกต้อง เพราะทางร้านใช้ข้อมูลนี้จ่าหน้าพัสดุ</p>
+      </div>
+      <div class="order-grid">
+        <form id="orderForm" novalidate>
+          <div class="field">
+            <label for="name">ชื่อผู้รับ</label>
+            <input id="name" name="name" type="text" autocomplete="name" required maxlength="80">
+          </div>
+          <div class="field">
+            <label for="phone">เบอร์โทร</label>
+            <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="0812345678" required maxlength="12">
+            <div class="hint">ตัวเลข 9-10 หลัก เช่น 0812345678</div>
+          </div>
+          <div class="field">
+            <label for="address">ที่อยู่ (เลขที่ ถนน ตำบล/แขวง อำเภอ/เขต)</label>
+            <textarea id="address" name="address" autocomplete="street-address" required maxlength="250"></textarea>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="province">จังหวัด</label>
+              <input id="province" name="province" type="text" list="provinces" autocomplete="address-level1" required maxlength="40">
+              <datalist id="provinces"></datalist>
+            </div>
+            <div class="field">
+              <label for="postal">รหัสไปรษณีย์</label>
+              <input id="postal" name="postal" type="text" inputmode="numeric" autocomplete="postal-code" required maxlength="5" placeholder="10110">
+            </div>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="website">อย่ากรอกช่องนี้</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="msg" id="msg" role="alert"></div>
+        </form>
+
+        <aside class="summary" aria-label="สรุปออเดอร์">
+          <h3>ออเดอร์ของคุณ</h3>
+          <ul id="lines"><li class="empty">ยังไม่ได้เลือกสินค้า</li></ul>
+          <div class="total"><span>รวม</span><span id="total">0 บาท</span></div>
+          <p class="note">ยอดนี้ยังไม่รวมค่าจัดส่ง ทางร้านจะติดต่อกลับทางเบอร์โทรเพื่อยืนยันออเดอร์</p>
+          <button class="btn" id="submitBtn" type="submit" form="orderForm">ยืนยันสั่งซื้อ</button>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">เส้นสุข บะหมี่กึ่งสำเร็จรูป | งานนี้จัดทำเพื่อการเรียน</div>
+</footer>
+
+<script>
+/* ===== ตั้งค่า (แก้ตรงนี้) ===== */
+const CONFIG = {
+  // วาง Web app URL ของ Google Apps Script ที่ได้หลัง Deploy (ลงท้ายด้วย /exec)
+  API_URL: "PASTE_YOUR_APPS_SCRIPT_URL_HERE",
+  // ใช้แสดงเมื่อโหลดสินค้าจากชีทไม่ได้ (ต้องตรงกับชีท Products)
+  FALLBACK_PRODUCTS: [
+    {sku:"NDL-001", name:"ยำยำ สูตรเด็ด รสต้มยำกุ้ง", flavor:"ต้มยำกุ้ง", size:"1 แพ็ค (5 ซอง ซองละ 60 กรัม)", price:45, image:"images/NDL-001.jpg"},
+    {sku:"NDL-002", name:"ยำยำ สูตรเด็ด รสหมูสับทรงเครื่อง", flavor:"หมูสับ", size:"1 แพ็ค (5 ซอง ซองละ 75 กรัม)", price:40, image:"images/NDL-002.jpg"}
+  ]
+};
+
+const PROVINCES = ["กรุงเทพมหานคร","กระบี่","กาญจนบุรี","กาฬสินธุ์","กำแพงเพชร","ขอนแก่น","จันทบุรี","ฉะเชิงเทรา","ชลบุรี","ชัยนาท","ชัยภูมิ","ชุมพร","เชียงราย","เชียงใหม่","ตรัง","ตราด","ตาก","นครนายก","นครปฐม","นครพนม","นครราชสีมา","นครศรีธรรมราช","นครสวรรค์","นนทบุรี","นราธิวาส","น่าน","บึงกาฬ","บุรีรัมย์","ปทุมธานี","ประจวบคีรีขันธ์","ปราจีนบุรี","ปัตตานี","พระนครศรีอยุธยา","พะเยา","พังงา","พัทลุง","พิจิตร","พิษณุโลก","เพชรบุรี","เพชรบูรณ์","แพร่","ภูเก็ต","มหาสารคาม","มุกดาหาร","แม่ฮ่องสอน","ยโสธร","ยะลา","ร้อยเอ็ด","ระนอง","ระยอง","ราชบุรี","ลพบุรี","ลำปาง","ลำพูน","เลย","ศรีสะเกษ","สกลนคร","สงขลา","สตูล","สมุทรปราการ","สมุทรสงคราม","สมุทรสาคร","สระแก้ว","สระบุรี","สิงห์บุรี","สุโขทัย","สุพรรณบุรี","สุราษฎร์ธานี","สุรินทร์","หนองคาย","หนองบัวลำภู","อ่างทอง","อำนาจเจริญ","อุดรธานี","อุตรดิตถ์","อุทัยธานี","อุบลราชธานี"];
+
+const $ = id => document.getElementById(id);
+let products = [];
+const qty = {};
+
+document.getElementById("provinces").innerHTML = PROVINCES.map(p => `<option value="${p}">`).join("");
+
+/* ===== รูปสินค้า: ลองนามสกุลอื่นให้อัตโนมัติถ้าไฟล์ไม่ตรง ===== */
+function loadImg(img, path){
+  const figure = img.parentElement;
+  if(!path){ figure.classList.add("noimg"); return; }
+  const m = path.match(/^(.*)\.([^.\/]+)$/);
+  const base = m ? m[1] : path;
+  const exts = ["jpg","jpeg","png","webp","JPG","JPEG","PNG","WEBP"];
+  const list = [path].concat(exts.map(e => base + "." + e)).filter((v,i,a) => a.indexOf(v) === i);
+  let i = 0;
+  img.onerror = () => {
+    i++;
+    if(i < list.length){ img.src = list[i]; }
+    else { img.onerror = null; figure.classList.add("noimg"); }
+  };
+  img.src = list[0];
+}
+
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+const baht = n => Number(n).toLocaleString("th-TH") + " บาท";
+
+/* ===== แสดงสินค้า ===== */
+function renderProducts(){
+  const box = $("products");
+  if(!products.length){ box.innerHTML = "<p>ยังไม่มีสินค้าให้สั่งซื้อ</p>"; return; }
+  box.innerHTML = products.map(p => {
+    const out = p.remaining !== undefined && p.remaining !== null && p.remaining <= 0;
+    return `
+    <article class="card" data-sku="${esc(p.sku)}">
+      <figure>
+        <img alt="${esc(p.name)}" loading="lazy">
+        <div class="fallback"><b>🍜</b><span>${esc(p.flavor || p.sku)}</span></div>
+      </figure>
+      <div class="body">
+        <h3>${esc(p.name)}</h3>
+        <div class="meta">${esc(p.size || "")}</div>
+        <div class="price">${Number(p.price).toLocaleString("th-TH")} <small>บาท/แพ็ค</small></div>
+        ${out ? '<div class="soldout">สินค้าหมดชั่วคราว</div>' : `
+        <div class="stepper">
+          <button type="button" data-act="minus" aria-label="ลดจำนวน ${esc(p.flavor || p.name)}">−</button>
+          <output id="q-${esc(p.sku)}" aria-live="polite">0</output>
+          <button type="button" data-act="plus" aria-label="เพิ่มจำนวน ${esc(p.flavor || p.name)}">+</button>
+        </div>`}
+      </div>
+    </article>`;
+  }).join("");
+  box.querySelectorAll(".card").forEach(card => {
+    const p = products.find(x => x.sku === card.dataset.sku);
+    loadImg(card.querySelector("img"), p.image);
+  });
+}
+
+$("products").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-act]");
+  if(!btn) return;
+  const sku = btn.closest(".card").dataset.sku;
+  const p = products.find(x => x.sku === sku);
+  const max = (p.remaining !== undefined && p.remaining !== null) ? Math.min(99, p.remaining) : 99;
+  let n = qty[sku] || 0;
+  n += btn.dataset.act === "plus" ? 1 : -1;
+  n = Math.max(0, Math.min(max, n));
+  qty[sku] = n;
+  btn.closest(".stepper").querySelector("output").textContent = n;
+  updateSummary();
+});
+
+function updateSummary(){
+  const chosen = products.filter(p => (qty[p.sku] || 0) > 0);
+  $("lines").innerHTML = chosen.length
+    ? chosen.map(p => `<li><span>${esc(p.flavor || p.name)} × ${qty[p.sku]}</span><span>${baht(p.price * qty[p.sku])}</span></li>`).join("")
+    : '<li class="empty">ยังไม่ได้เลือกสินค้า</li>';
+  $("total").textContent = baht(chosen.reduce((s,p) => s + p.price * qty[p.sku], 0));
+}
+
+/* ===== โหลดสินค้า ===== */
+const apiReady = () => CONFIG.API_URL && !CONFIG.API_URL.startsWith("PASTE_");
+async function loadProducts(){
+  products = CONFIG.FALLBACK_PRODUCTS.slice();
+  if(apiReady()){
+    try{
+      const res = await fetch(CONFIG.API_URL + "?action=products");
+      const data = await res.json();
+      if(data.ok && data.products.length) products = data.products;
+    }catch(err){ /* ใช้ค่าสำรอง */ }
+  }
+  renderProducts();
+  updateSummary();
+}
+loadProducts();
+
+/* ===== ส่งออเดอร์ ===== */
+function showMsg(text, type){
+  const m = $("msg");
+  m.textContent = text;
+  m.className = "msg " + type;
+  m.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+$("orderForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  $("msg").className = "msg";
+  const f = e.target;
+  const items = products.filter(p => (qty[p.sku] || 0) > 0).map(p => ({sku:p.sku, qty:qty[p.sku]}));
+  const name = $("name").value.trim();
+  const phone = $("phone").value.replace(/[\s-]/g, "");
+  const address = $("address").value.trim();
+  const province = $("province").value.trim();
+  const postal = $("postal").value.trim();
+
+  if(!items.length) return showMsg("กรุณาเลือกสินค้าอย่างน้อย 1 รายการ", "err");
+  if(!name) return showMsg("กรุณากรอกชื่อผู้รับ", "err");
+  if(!/^0\d{8,9}$/.test(phone)) return showMsg("เบอร์โทรไม่ถูกต้อง ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก", "err");
+  if(address.length < 10) return showMsg("กรุณากรอกที่อยู่ให้ครบ (เลขที่ ถนน ตำบล อำเภอ)", "err");
+  if(!province) return showMsg("กรุณากรอกจังหวัด", "err");
+  if(!/^\d{5}$/.test(postal)) return showMsg("รหัสไปรษณีย์ต้องเป็นตัวเลข 5 หลัก", "err");
+  if(!apiReady()) return showMsg("ยังไม่ได้เชื่อมต่อกับ Google Sheet: ใส่ Web app URL ในตัวแปร API_URL ของไฟล์ index.html", "err");
+
+  const btn = $("submitBtn");
+  btn.disabled = true; btn.textContent = "กำลังส่งออเดอร์...";
+  try{
+    const res = await fetch(CONFIG.API_URL, {
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({name, phone, address, province, postal, items, website:$("website").value})
+    });
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || "ส่งออเดอร์ไม่สำเร็จ");
+    showMsg("สั่งซื้อสำเร็จ เลขที่ออเดอร์ " + data.orderId + " ทางร้านจะติดต่อกลับทางเบอร์ " + phone, "ok");
+    f.reset();
+    Object.keys(qty).forEach(k => qty[k] = 0);
+    loadProducts();
+  }catch(err){
+    showMsg("ส่งออเดอร์ไม่สำเร็จ: " + err.message + " กรุณาลองอีกครั้ง", "err");
+  }finally{
+    btn.disabled = false; btn.textContent = "ยืนยันสั่งซื้อ";
+  }
+});
+</script>
+</body>
+</html>
